@@ -7,14 +7,11 @@ include: "*.view"
 include: "*.dashboard"
 
 explore: order_items {
-  fields: [ALL_FIELDS*,-id]
+  join: inventory_items {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${inventory_items.id}=${order_items.inventory_item_id} ;;
+  }
 }
-explore: inventory_items {}
-
-explore: order_items_technical {
-  from: order_items
-
-}
-
 
 explore: users {}
