@@ -4,6 +4,7 @@ view: users {
   dimension: id {
     primary_key: yes
     type: number
+    hidden: yes
     sql: ${TABLE}.id ;;
   }
 
@@ -11,6 +12,18 @@ view: users {
     type: number
     sql: ${TABLE}.age ;;
   }
+
+  dimension: age_tier
+  {
+    type: tier
+    sql: ${TABLE}.age ;;
+    tiers: [10,20,30,40,50,60]
+    style: interval
+
+
+
+  }
+
 
   dimension: city {
     type: string
@@ -46,6 +59,12 @@ view: users {
     type: string
     sql: ${TABLE}.first_name ;;
   }
+
+  dimension: full_name {
+    type: string
+    sql: ${TABLE}.first_name + ' ' + ${TABLE}.last_name;;
+  }
+
 
   dimension: gender {
     type: string
@@ -86,4 +105,13 @@ view: users {
     type: count
     drill_fields: [id, first_name, last_name, events.count, order_items.count]
   }
+
+  measure: count_email_traffic_source {
+    type: count
+    filters: {
+      field: traffic_source
+      value: "email"
+    }
+  }
+
 }
