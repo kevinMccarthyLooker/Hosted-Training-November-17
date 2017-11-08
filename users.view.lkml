@@ -17,11 +17,8 @@ view: users {
   {
     type: tier
     sql: ${TABLE}.age ;;
-    tiers: [10,20,30,40,50,60]
-    style: interval
-
-
-
+    tiers: [0,10,20,30,40,50,60]
+    style: integer
   }
 
 
@@ -39,8 +36,6 @@ view: users {
   dimension_group: created {
     type: time
     timeframes: [
-      raw,
-      time,
       date,
       week,
       month,
@@ -61,8 +56,9 @@ view: users {
   }
 
   dimension: full_name {
+    label: "The full name"
     type: string
-    sql: ${TABLE}.first_name + ' ' + ${TABLE}.last_name;;
+    sql:  ${first_name}+ ' ' + ${last_name} ;;
   }
 
 
@@ -110,7 +106,7 @@ view: users {
     type: count
     filters: {
       field: traffic_source
-      value: "email"
+      value: "Email"
     }
   }
 
