@@ -20,6 +20,13 @@ explore: order_items {
     sql_on: ${order_items.user_id} = ${users.id} ;;
   }
 
+  join: lifetime_orders {
+    type:  left_outer
+    relationship: one_to_one
+    sql_on: ${order_items.user_id} = ${lifetime_orders.id} ;;
+
+  }
+
 
 }
 
