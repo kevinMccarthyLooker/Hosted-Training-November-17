@@ -2,6 +2,7 @@ view: inventory_items {
   sql_table_name: public.inventory_items ;;
 
   dimension: id {
+    hidden: yes
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
@@ -42,13 +43,14 @@ view: inventory_items {
   }
 
   dimension: product_distribution_center_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.product_distribution_center_id ;;
   }
 
   dimension: product_id {
     type: number
-    # hidden: yes
+    hidden: yes
     sql: ${TABLE}.product_id ;;
   }
 
@@ -60,6 +62,11 @@ view: inventory_items {
   dimension: product_retail_price {
     type: number
     sql: ${TABLE}.product_retail_price ;;
+  }
+
+  dimension: margin {
+    type: number
+    sql: ${product_retail_price}-${cost} ;;
   }
 
   dimension: product_sku {
@@ -85,4 +92,23 @@ view: inventory_items {
     type: count
     drill_fields: [id, product_name, products.id, products.name, order_items.count]
   }
+
+  measure: max_cost {
+    type: max
+    sql: ${cost} ;;
+  }
+
+  measure: total_margin {
+    type: number
+    sql: ${product_retail_price}-${cost} ;;
+  }
+
+  measure: average_margin {
+    label: "Avg Price minus Cost"
+    view_label:"test"
+    description: "Tool Tip"
+    type: number
+    sql: sum(${margin})*1.0/nullif(${count},0) ;;
+  }
+
 }
